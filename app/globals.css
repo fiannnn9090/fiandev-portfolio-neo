@@ -1,26 +1,163 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Design tokens — International Neo-Modernist Architecture
+ * Sources: design-ref/DESIGN.md (front-matter tokens) + design-ref/code.html (rendered palette)
+ * Tailwind v4 is CSS-first: this @theme block replaces tailwind.config.js.
+ */
+@theme {
+  /* ── Color: substrate & structure ─────────────────────────── */
+  --color-surface: #fbf9f3; /* paper canvas */
+  --color-surface-dim: #f2efeb; /* muted panel substrate */
+  --color-surface-container: #edeae2; /* index numerals, chips */
+  --color-surface-container-high: #e4e0d5; /* hover fills, diagrams */
+  --color-surface-bright: #ffffff;
+
+  /* ── Color: ink ───────────────────────────────────────────── */
+  --color-on-surface: #111111; /* deep ink */
+  --color-secondary: #6f6c65; /* secondary ink / metadata */
+  --color-secondary-bright: #a8a49c; /* muted-on-dark annotation */
+
+  /* ── Color: accent (vermilion) ───────────────────────────── */
+  --color-primary: #d9382b;
+  --color-primary-dark: #b51d15;
+  --color-primary-tint: #b81f17;
+
+  /* ── Color: rules & frames ────────────────────────────────── */
+  --color-line: #ddd9cd; /* hairline rule */
+  --color-rule: #d1cdc4; /* architectural hairline */
+  --color-line-strong: #111111; /* high-priority boundary */
+  --color-plane: #f4f1ea; /* blueprint diagram plane */
+  --color-plane-warm: #e6e1d3; /* overlapping geometric plane */
+  --color-plane-hero: #efece3; /* hero backdrop block */
+
+  /* ── Typography ───────────────────────────────────────────── */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* display-xl — hero statement (mobile 3.25rem → desktop 5.5rem) */
+  --text-display-xl: 3.25rem;
+  --text-display-xl--line-height: 1;
+  --text-display-xl--letter-spacing: -0.04em;
+
+  /* headline-lg — section headline */
+  --text-headline-lg: 2.25rem;
+  --text-headline-lg--line-height: 1.1;
+  --text-headline-lg--letter-spacing: -0.03em;
+
+  /* headline-md — sub-headline */
+  --text-headline-md: 1.5rem;
+  --text-headline-md--line-height: 1.2;
+  --text-headline-md--letter-spacing: -0.02em;
+
+  /* headline-sm — card title */
+  --text-headline-sm: 1.375rem;
+  --text-headline-sm--line-height: 1.75rem;
+  --text-headline-sm--letter-spacing: -0.01em;
+
+  /* body-lg / body-md / body-sm */
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75rem;
+  --text-body-lg--letter-spacing: -0.01em;
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.6rem;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.4rem;
+
+  /* label-code — uppercase monospace metadata */
+  --text-label-code: 0.8125rem;
+  --text-label-code--line-height: 1.2rem;
+  --text-label-code--letter-spacing: 0.05em;
+
+  /* index-numeral — oversized modular sector numeral */
+  --text-index: 3.5rem;
+  --text-index--line-height: 1;
+  --text-index--letter-spacing: -0.04em;
+
+  /* ── Shapes: strictly zero-elevation, 0px radius ──────────── */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+  --radius-full: 0px;
+
+  /* ── Spacing scale ────────────────────────────────────────── */
+  --spacing-gutter: 1.5rem; /* mobile gutter */
+  --spacing-gutter-desktop: 2.5rem; /* desktop gutter */
+  --spacing-margin: 1.25rem; /* mobile canvas margin */
+  --spacing-margin-desktop: 3.5rem; /* desktop canvas margin */
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.75rem;
+  --spacing-space-xl: 3rem;
+
+  /* ── Motion: crisp 100–200ms steps, no drift ──────────────── */
+  --ease-step: step-end;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ── Base ───────────────────────────────────────────────────── */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --header-height: 4rem;
+    color-scheme: light;
+  }
+
+  html {
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: var(--font-body);
+    overscroll-behavior-y: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  * {
+    border-radius: 0 !important;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Utilities ──────────────────────────────────────────────── */
+@utility canvas-x {
+  padding-inline: var(--spacing-margin);
+
+  @media (min-width: 768px) {
+    padding-inline: var(--spacing-margin-desktop);
+  }
+}
+
+/* Architectural list/row baseline used by nav + contact rows */
+@utility row-dim {
+  transition: background-color 100ms step-end, color 100ms step-end;
 }
