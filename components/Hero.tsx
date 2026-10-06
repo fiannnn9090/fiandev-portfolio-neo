@@ -124,7 +124,7 @@ export function Hero() {
         </div>
         <div>
           <Link href="/work" className="transition-colors hover:text-primary">
-            SCROLL TO EXPLORE DOSSIER ↓
+            GO TO MY WORK
           </Link>
         </div>
       </div>
